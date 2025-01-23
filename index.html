@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>lali beauty</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <img class="img" src="logo.svg" alt="Logo">
+        <div class="cart-icon" onclick="openCartModal()">
+            <svg dir="rtl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path d="M4.004 6.417l-.88-1.42h-2.12v2h1.28l1.72 6.003h13.163l1.725-6.003h1.28v-2h-2.12l-.88 1.42h-13.17zm14.996 10.583c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm-12 0c0 1.104-.896 2-2 2s-2-.896-2-2 .896-2 2-2 2 .896 2 2zm14-10h-16l1.72 6h12.56l1.72-6z"/>
+            </svg>
+            <span id="cart-count">0</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- عرض المنتجات -->
+        <section id="shop">
+            <h2>المنتجات</h2>
+            <div class="products">
+                <!-- سيتم ملؤها بالمنتجات -->
+            </div>
+        </section>
+    </main>
+
+    <!-- نافذة تفاصيل المنتج -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div class="product-details">
+                <div class="main-image">
+                    <img id="main-product-image" src="" alt="صورة المنتج">
+                </div>
+                <div class="thumbnail-images">
+                    <!-- سيتم ملؤها بالصور المصغرة -->
+                </div>
+                <h3 id="product-name"></h3>
+                <p id="product-description"></p>
+                <p id="product-price"></p>
+                <select id="size">
+                    <!-- سيتم ملؤها بالأحجام -->
+                </select>
+                <button onclick="addToCart()">إضافة إلى السلة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة السلة -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCartModal()">&times;</span>
+            <h2>سلة التسوق</h2>
+            <div class="cart-table-container">
+                <table id="cart-table">
+                    <thead>
+                        <tr>
+                            <th>المنتج</th>
+                            <th>السعر</th>
+                            <th>الكمية</th>
+                            <th>الإجمالي</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- سيتم ملؤها بالمنتجات في السلة -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="cart-summary">
+                <p>الإجمالي: <span id="total-price">0</span> ريال</p>
+                <input type="text" id="discount-code" placeholder="أدخل كود الخصم">
+                <button onclick="applyDiscount()">تطبيق الخصم</button>
+                <p>الإجمالي بعد الخصم: <span id="final-price">0</span> ريال</p>
+                <button onclick="openCheckoutModal()">إتمام الشراء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة إتمام الشراء -->
+    <div id="checkout-modal" class="modal">
+        <div class="modal-content block">
+            <span class="close" onclick="closeCheckoutModal()">&times;</span>
+            <h2>إتمام الشراء</h2>
+            <form id="checkout-form">
+                <div style="display:block" dir="rtl">
+                    <div style="display:block ki">
+                        <label for="phone">رقم التواصل (مطلوب):</label>
+                    </div>
+                    <input placehder="رقم الجوال..." class="butto" type="text" id="phone" size="9" maxlength="9" name="phone" required>
+
+                    <div style="display:block">
+                        <label for="address">العنوان (اختياري):</label>
+                    </div>
+                    <input class="butto" type="text" id="address" name="address">
+
+
+
+                    <label>طريقة التواصل المفضلة:</label>
+                    <div class="rad">
+                        <div class="contact-method">
+                            <input class="radio" type="radio" id="whatsapp" name="contact" value="whatsapp" checked>
+                            <label for="whatsapp">واتساب</label>
+                        </div>
+                        <div class="contact-method">
+                            <input type="radio" id="telegram" name="contact" value="telegram">
+                            <label for="telegram">تليجرام</label>
+                        </div>
+                        <div class="contact-method">
+                            <input type="radio" id="call" name="contact" value="call">
+                            <label for="call">اتصال</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="inb">إرسال الطلب</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
