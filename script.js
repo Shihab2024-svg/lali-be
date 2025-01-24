@@ -4,7 +4,7 @@ const products = [
         id: 1,
         name: "سيروم فيتامين C",
         price: 2500,
-        images: ["img/1/1.jpg"],
+        images: ["img/1/1.png"],
         description: "يحمي الجلد من اضرار الشمس",
             
         sizes: ["حجم واحد"]
@@ -13,7 +13,7 @@ const products = [
         id: 2,
         name: "صابونة الشوفان والعسل",
         price: 2200,
-        images: ["img/2/1.jpg", "img/2/2.jpg","img/2/3.jpg"],
+        images: ["img/2/1.png", "img/2/2.png","img/2/3.png"],
         description: "تعمل كضماد طبيعي لألتهابات البكتريا و الميكروبات"  ,
         sizes: ["M", "L"]
     },
@@ -21,7 +21,7 @@ const products = [
         id: 3,
         name: "صابونة الفحم النشط",
         price: 2100,
-        images: ["img/3/1.jpg", "img/3/2.jpg"],
+        images: ["img/3/1.png", "img/3/2.png"],
         description: "تعالج البشرة الدهنية لأن الفحم يمتص الزيوت الزائدة في البشرة"  ,
         sizes: ["حجم واحد"]
     },
@@ -29,7 +29,7 @@ const products = [
         id: 4,
         name: "مرطب ومقشر الشفاة",
         price: 3100,
-        images: ["img/4/1.jpg", "img/4/2.jpg","img/4/3.jpg"],
+        images: ["img/4/1.png", "img/4/2.png","img/4/3..png"],
         description: "تعالج البشرة الدهنية لأن الفحم يمتص الزيوت الزائدة في البشرة"  ,
         sizes: ["حجم واحد"]
     }
@@ -37,11 +37,24 @@ const products = [
 
 // أكواد الخصم
 const discountCodes = [
-    { code: "DISCOUNT10", type: "percentage", value: 10 }, // خصم 10%
-    { code: "DISCOUNT20", type: "percentage", value: 20 }, // خصم 20%
-    { code: "FIXED50", type: "fixed", value: 50 }, // خصم ثابت 50 ريال
-    { code: "500h", type: "fixed", value: 500 },
+    // أكواد الخصم الثابتة (Fixed Discount)
+    { code: "20CIMI", type: "fixed", value: 500, expiryDate: "2025-1-27T23:59:59" }, // خصم 500 ريال ينتهي في آخر ثانية من 31 ديسمبر 2025
+    { code: "20EHSE", type: "fixed", value: 1000, expiryDate: "2025-06-30T23:59:59" }, // خصم 1000 ريال ينتهي في آخر ثانية من 30 يونيو 2025
+
+    // أكواد الخصم النسبية (Percentage Discount)
+    { code: "20XCGC", type: "percentage", value: 10, expiryDate: "2025-03-15T23:59:59" }, // خصم 10% ينتهي في آخر ثانية من 15 مارس 2025
+    { code: "20LQCL", type: "percentage", value: 20, expiryDate: "2025-09-01T23:59:59" }, // خصم 20% ينتهي في آخر ثانية من 1 سبتمبر 2025
+    { code: "20RXGA", type: "percentage", value: 30, expiryDate: "2025-12-01T23:59:59" }, // خصم 30% ينتهي في آخر ثانية من 1 ديسمبر 2025
+
+    // أكواد الخصم المشروطة (Conditional Discount)
+    { code: "20ZCII", type: "conditional-fixed", value: 500, condition: { minProducts: 2 }, expiryDate: "2025-01-24T11:48:50" }, // خصم 500 ريال عند شراء منتجين أو أكثر، ينتهي في آخر ثانية من 20 مايو 2025
+    { code: "20ERYA", type: "conditional-fixed", value: 1000, condition: { minProducts: 3 }, expiryDate: "2025-07-10T23:59:59" }, // خصم 1000 ريال عند شراء 3 منتجات أو أكثر، ينتهي في آخر ثانية من 10 يوليو 2025
+    { code: "20KVLO", type: "conditional-fixed", value: 500, condition: { minTotal: 3000 }, expiryDate: "2025-08-15T23:59:59" }, // خصم 500 ريال عند وصول السعر الإجمالي إلى 3000 ريال أو أكثر، ينتهي في آخر ثانية من 15 أغسطس 2025
+    { code: "20PWYB", type: "conditional-fixed", value: 1000, condition: { minTotal: 5000 }, expiryDate: "2025-10-01T23:59:59" }, // خصم 1000 ريال عند وصول السعر الإجمالي إلى 5000 ريال أو أكثر، ينتهي في آخر ثانية من 1 أكتوبر 2025
+    { code: "20KXXY%", type: "conditional-percentage", value: 20, condition: { minTotal: 7000 }, expiryDate: "2025-11-30T23:59:59" }, // خصم 20% عند وصول السعر الإجمالي إلى 7000 ريال أو أكثر، ينتهي في آخر ثانية من 30 نوفمبر 2025
+    { code: "20QGZY%", type: "conditional-percentage", value: 30, condition: { minTotal: 10000 }, expiryDate: "2025-12-25T23:59:59" }, // خصم 30% عند وصول السعر الإجمالي إلى 10000 ريال أو أكثر، ينتهي في آخر ثانية من 25 ديسمبر 2025
 ];
+
 
 // السلة
 let cart = [];
@@ -189,24 +202,60 @@ function closeCheckoutModal() {
 // تطبيق الخصم
 function applyDiscount() {
     const discountCode = document.getElementById('discount-code').value.trim();
+    const totalPrice = parseFloat(document.getElementById('total-price').textContent);
+    let finalPrice = totalPrice;
+
+    // البحث عن كود الخصم
     const discount = discountCodes.find(dc => dc.code === discountCode);
 
     if (discount) {
-        const totalPrice = parseFloat(document.getElementById('total-price').textContent);
-        let finalPrice = totalPrice;
+        let isValid = true;
+        let conditionMessage = "";
 
-        if (discount.type === "percentage") {
-            finalPrice = totalPrice - (totalPrice * (discount.value / 100));
-        } else if (discount.type === "fixed") {
-            finalPrice = totalPrice - discount.value;
+        // التحقق من تاريخ انتهاء الصلاحية
+        const currentDate = new Date(); // التاريخ والوقت الحاليين
+        const expiryDate = new Date(discount.expiryDate); // تحويل expiryDate إلى كائن Date
+
+        if (currentDate > expiryDate) {
+            isValid = false;
+            conditionMessage = `عذرًا، كود الخصم "${discount.code}" انتهت صلاحيته في ${formatDate(expiryDate)}.`;
         }
 
-        document.getElementById('final-price').textContent = finalPrice.toFixed(2);
-        appliedDiscountCode = discountCode; // تخزين كود الخصم المستخدم
-        alert(`تم تطبيق الخصم بنجاح!`);
-    } else {
+        // التحقق من الشروط إذا كان الخصم مشروطًا
+        if (discount.condition && isValid) {
+            if (discount.condition.minProducts && cart.length < discount.condition.minProducts) {
+                isValid = false;
+                conditionMessage = `هذا الكود يتطلب شراء ${discount.condition.minProducts} منتجات أو أكثر.`;
+            }
+            if (discount.condition.minTotal && totalPrice < discount.condition.minTotal) {
+                isValid = false;
+                conditionMessage = `هذا الكود يتطلب أن يكون إجمالي السلة ${discount.condition.minTotal} ريال أو أكثر.`;
+            }
+        }
+
+        // تطبيق الخصم إذا كان الكود صالحًا
+        if (isValid) {
+            if (discount.type === "percentage" || discount.type === "conditional-percentage") {
+                finalPrice -= totalPrice * (discount.value / 100); // خصم نسبة مئوية
+            } else if (discount.type === "fixed" || discount.type === "conditional-fixed") {
+                finalPrice -= discount.value; // خصم ثابت
+            }
+            alert(`تم تطبيق كود الخصم "${discount.code}" بنجاح!\nتم تطبيق خصم بقيمة: ${discount.value}${discount.type.includes("percentage") ? "%" : " ريال"}`);
+        } else {
+            alert(`عذرًا، لا يمكن تطبيق كود الخصم "${discount.code}".\n${conditionMessage}`);
+        }
+    } else if (discountCode) {
         alert("عذرًا، كود الخصم غير صحيح.");
     }
+
+    // تحديث السعر النهائي
+    document.getElementById('final-price').textContent = finalPrice.toFixed(2);
+}
+
+// دالة مساعدة لتنسيق التاريخ
+function formatDate(date) {
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+    return new Date(date).toLocaleDateString('ar-SA', options);
 }
 
 // فتح نافذة إتمام الشراء
@@ -235,6 +284,10 @@ ${order.products.map(p => `- ${p.name} (${p.size}) | السعر: ${p.price} ري
 رقم التواصل: ${order.phone}
 العنوان: ${order.address}
 طريقة التواصل: ${order.contactMethod}
+
+
+تم تطبيق كود الخصم "${discount.code}" بنجاح!\nتم تطبيق خصم بقيمة: ${discount.value}${discount.type.includes("percentage") ? "%" : " ريال"}
+
     `;
 
     fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -249,7 +302,7 @@ ${order.products.map(p => `- ${p.name} (${p.size}) | السعر: ${p.price} ري
     })
     .then(response => response.json())
     .then(data => {
-        console.log('تم إرسال الرسالة بنجاح:', data);
+        console.log('تم إرسال الطلب بنجاح:', data);
         alert("تم إرسال طلبك بنجاح! سيتم التواصل معك قريبًا.");
         cart = []; // تفريغ السلة بعد إرسال الطلب
         updateCartDisplay(); // تحديث عرض السلة
