@@ -272,7 +272,7 @@ function openCheckoutModal() {
 // إرسال الطلب إلى Telegram
 function sendToTelegram(order) {
     const botToken = '7678780527:AAG6IthVqq-uDyoVoDiqStaF6n66-ODAEVE'; // استبدل ببوت توكن الخاص بك
-    const chatId = '5950748299'; // استبدل بمعرف الدردشة الخاص بك
+    const chatId = '-4634251580'; // استبدل بمعرف الدردشة الخاص بك
 
     const message = `
 طلب جديد:
