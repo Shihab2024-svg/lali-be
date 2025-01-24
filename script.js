@@ -285,9 +285,6 @@ ${order.products.map(p => `- ${p.name} (${p.size}) | السعر: ${p.price} ري
 العنوان: ${order.address}
 طريقة التواصل: ${order.contactMethod}
 
-
-تم تطبيق كود الخصم "${discount.code}" بنجاح!\nتم تطبيق خصم بقيمة: ${discount.value}${discount.type.includes("percentage") ? "%" : " ريال"}
-
     `;
 
     fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
