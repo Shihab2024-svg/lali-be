@@ -4,7 +4,7 @@ const products = [
         id: 1,
         name: "سيروم فيتامين C",
         price: 2500,
-        images: ["img/1/1.png"],
+        images: ["img/1/1.jpg"],
         description: "يحمي الجلد من اضرار الشمس",
             
         sizes: ["حجم واحد"]
@@ -13,7 +13,7 @@ const products = [
         id: 2,
         name: "صابونة الشوفان والعسل",
         price: 2200,
-        images: ["img/2/1.png", "img/2/2.png","img/2/3.png"],
+        images: ["img/2/1.jpg", "img/2/2.jpg","img/2/3.jpg"],
         description: "تعمل كضماد طبيعي لألتهابات البكتريا و الميكروبات"  ,
         sizes: ["M", "L"]
     },
@@ -21,7 +21,7 @@ const products = [
         id: 3,
         name: "صابونة الفحم النشط",
         price: 2100,
-        images: ["img/3/1.png", "img/3/2.png"],
+        images: ["img/3/1.jpg", "img/3/2.jpg"],
         description: "تعالج البشرة الدهنية لأن الفحم يمتص الزيوت الزائدة في البشرة"  ,
         sizes: ["حجم واحد"]
     },
@@ -29,7 +29,7 @@ const products = [
         id: 4,
         name: "مرطب ومقشر الشفاة",
         price: 3100,
-        images: ["img/4/1.png", "img/4/2.png","img/4/3..png"],
+        images: ["img/4/1.jpg", "img/4/2.jpg","img/4/3.jpg"],
         description: "تعالج البشرة الدهنية لأن الفحم يمتص الزيوت الزائدة في البشرة"  ,
         sizes: ["حجم واحد"]
     }
